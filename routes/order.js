@@ -18,6 +18,8 @@ router.post('/pay', checkAuth, async (req, res) => {
 
         const userOrder = await order.save()
 
+        console.log(userOrder);
+
         res.json(userOrder)
     } catch (err) {
         console.log(err);

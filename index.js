@@ -9,7 +9,7 @@ const orderRoute = require('./routes/order')
 
 // process.env.MONGODB_URI
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect('mongodb+srv://SashkoTravel:gowno444@cluster0.xqc027t.mongodb.net/?retryWrites=true&w=majority')
     .then(() => { console.log('mongoDB ok') })
     .catch((err) => { console.log(err) })
 
