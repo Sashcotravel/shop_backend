@@ -28,11 +28,11 @@ router.post('/pay', async (req, res) => {
     }
 })
 
-router.post('/generation', (req, res) => {
+router.post('/mail', async (req, res) => {
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
 
-    const { userData, massage } = req.body
+    const { user } = req.body
 
     const { EMAIL, PASSWORD } = process.env
 
@@ -71,7 +71,7 @@ router.post('/generation', (req, res) => {
                             from: EMAIL,
                             to: EMAIL, 
                             subject: 'Замовлення покупця',
-                            text: 'Your order',
+                            text: `${user.date ? user.name + ' замовив консультацію на ' + user.date  : user.name + ' зробив замовлення'}`,
                             attachments: [
                                 {
                                     path: data.filename
@@ -92,60 +92,68 @@ router.post('/generation', (req, res) => {
     )
 })
 
-router.post('/mail', async (req, res) => {
-    try {
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
-
-        const { userData, massage } = req.body
-
-        const { EMAIL, PASSWORD } = process.env
-
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: EMAIL,
-                pass: PASSWORD,
-            }
-        })
-
-        const mailOptions2 = {
-            from: EMAIL,
-            to: EMAIL,
-            subject: 'Це замовлення покупця',
-            text: `Доброго дня госполар, компанія "ООО", ось замовлення покупця, ${userData.date ? 'і ще є консультація на '+ userData.date : ''}`
-        }
-
-        transporter.sendMail(mailOptions2)
-    } catch (err) {
-        console.log(err);
-        res.status(500).json('Failed to register')
-    }
-})
-
 router.post('/mailUser', async (req, res) => {
     try { 
         process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
 
-        const { userData, massage } = req.body
+        const { user } = req.body
 
         const { EMAIL, PASSWORD } = process.env
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: EMAIL,
-                pass: PASSWORD,
+        ejs.renderFile(
+            path.join(__dirname, '../views/', 'report-template.ejs'),
+            {
+                order: req.body
+            },
+            (err, data) => {
+                if(err){
+                    res.send(err)
+                } else {
+                    let option = {
+                        height: '11.25in',
+                        width: '8.5in',
+                        header: {
+                            height: '20mm'
+                        },
+                        footer: {
+                            height: '20mm'
+                        }
+                    }
+                    pdf.create(data, option).toFile('order.pdf', function (err, data) {
+                        if(err) {
+                            res.send(err)
+                        } else {
+                            res.send('File create successfully')
+                            let mailTransporter = nodemailer.createTransport({
+                                service: 'gmail',
+                                auth: {
+                                    user: EMAIL,
+                                    pass: PASSWORD,
+                                }
+                            }) 
+                            let mailDetails = {
+                                from: EMAIL,
+                                to: user.email, 
+                                subject: 'Ваше замовлення',
+                                text: `Доброго дня ${user.name}, компанія "ООО", ваше замовлення в обробці ${user.date ? ', і ваша консультація на '+ user.date : ''}`,
+                                attachments: [
+                                    {
+                                        path: data.filename
+                                    }
+                                ]
+                            }
+                            mailTransporter.sendMail(mailDetails, function (err, data) {
+                                if(err) {
+                                    console.log(err);
+                                } else {
+                                    console.log('Email send');
+                                }
+                            })
+                        }
+                    })
+                }
             }
-        })
-
-        const mailOptions = {
-            from: EMAIL,
-            to: userData.email,
-            subject: 'Це ваше замовлення',
-            text: `Доброго дня ${userData.name}, компанія "ООО", ось ваше замовлення ${massage} ${userData.date ? ', і консультація на '+ userData.date : ''}`
-        }
-
-        res.json({ result: await transporter.sendMail(mailOptions) })
+        )
     } catch (err) {
         console.log(err);
         res.status(500).json('Failed to register')

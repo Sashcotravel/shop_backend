@@ -12,7 +12,7 @@
     <div style="width: 85%; margin: 0 7.5%;">
         <div style="text-align: center; padding-left: 50px;">
             <h3>Квитанція замовлення</h3>
-            <h5><%= order.user.name %></h5>
+            <h5>Замовник: <%= order.user.name %></h5>
             <center>
                 <table>
                     <th style="text-align: center; padding-left: 10px;">НАЙМЕНУВАННЯ ТОВАРУ</th>
@@ -22,15 +22,15 @@
                     <% if(order.order.length > 0) { %>
                         <% order.order.forEach(item => {%>
                             <tr>
-                                <td><%= item.nameOfGoods %></td>
-                                <td><%= item.prise %></td>
-                                <td><%= item.size %></td>
-                                <td><%= item.total %></td>
+                                <td style="text-align: center; padding-left: 10px;"><%= item.nameOfGoods %></td>
+                                <td style="text-align: center; padding-left: 10px;"><%= item.prise %></td>
+                                <td style="text-align: center; padding-left: 10px;"><%= item.size %></td>
+                                <td style="text-align: center; padding-left: 10px;"><%= item.total %></td>
                             </tr>
                         <%  }) %>
                     <%    } %>
                 </table>
-                <div>Загальна сума <%= order.total %></div>
+                <div style="text-align: end; padding-left: 30px;">Загальна сума <%= order.total %></div>
             </center>
         </div>
     </div>
