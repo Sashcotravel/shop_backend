@@ -1,7 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const authRoute = require('./routes/auth')
 const orderRoute = require('./routes/order')
 
 
@@ -20,7 +19,6 @@ app.use(express.json())
 app.use(cors())
 
 
-app.use('/auth', authRoute)
 app.use('/order', orderRoute)
 
 

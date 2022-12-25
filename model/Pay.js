@@ -14,14 +14,9 @@ const PaySchema = new mongoose.Schema({
         name: String,
         phone: Number,
         email: String,
-        cite: String
-        // district: String
-    },
-    // user: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User',
-    //     required: true
-    // },
+        cite: String,
+        date: String
+    }
 },
     { timestamps: true },
 )
