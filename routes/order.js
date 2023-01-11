@@ -5,6 +5,7 @@ const PaySchema = require('../model/Pay')
 let ejs = require('ejs')
 let pdf = require('html-pdf')
 let path = require('path')
+const { dirname } = require('path')
 
 
 router.post('/pay', async (req, res) => {
@@ -18,8 +19,6 @@ router.post('/pay', async (req, res) => {
         })
 
         const userOrder = await order.save()
-
-        console.log(userOrder);
 
         res.json(userOrder)
     } catch (err) {
@@ -98,6 +97,8 @@ router.post('/mailUser', async (req, res) => {
 
         const { user } = req.body
 
+        // console.log(__dirname);
+
         const { EMAIL, PASSWORD } = process.env
 
         ejs.renderFile(
@@ -138,7 +139,10 @@ router.post('/mailUser', async (req, res) => {
                                 text: `Доброго дня ${user.name}, компанія "ООО", ваше замовлення в обробці ${user.date ? ', і ваша консультація на '+ user.date : ''}`,
                                 attachments: [
                                     {
-                                        path: data.filename
+                                        path: data.filename,
+                                    },
+                                    {
+                                        path: `${__dirname}/img/tableSamWash.pdf`,
                                     }
                                 ]
                             }
