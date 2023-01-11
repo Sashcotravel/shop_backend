@@ -27,6 +27,26 @@ router.post('/pay', async (req, res) => {
     }
 })
 
+
+router.get('/fetchOrder/:id', async (req, res) => {
+    try {
+        // console.log(req.params.id);
+
+        const userOrder = await PaySchema.find({_id: req.params.id}).exec();
+
+        const order = {
+            total: userOrder[0].total,
+            order: userOrder[0].order,
+            createdAt: userOrder[0].createdAt
+        }
+
+        res.json(order)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json('Failed to register')
+    }
+})
+
 router.post('/mail', async (req, res) => {
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
@@ -69,6 +89,70 @@ router.post('/mail', async (req, res) => {
                         let mailDetails = {
                             from: EMAIL,
                             to: EMAIL, 
+                            subject: 'Замовлення покупця',
+                            text: `${user.date ? user.name + ' замовив консультацію на ' + user.date  : user.name + ' зробив замовлення'}`,
+                            attachments: [
+                                {
+                                    path: data.filename
+                                }
+                            ]
+                        }
+                        mailTransporter.sendMail(mailDetails, function (err, data) {
+                            if(err) {
+                                console.log(err);
+                            } else {
+                                console.log('Email send');
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    )
+})
+
+router.post('/mailDima', async (req, res) => {
+
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
+
+    const { user } = req.body
+
+    const { EMAIL, PASSWORD } = process.env
+
+    ejs.renderFile(
+        path.join(__dirname, '../views/', 'report-template.ejs'),
+        {
+            order: req.body
+        },
+        (err, data) => {
+            if(err){
+                res.send(err)
+            } else {
+                let option = {
+                    height: '11.25in',
+                    width: '8.5in',
+                    header: {
+                        height: '20mm'
+                    },
+                    footer: {
+                        height: '20mm'
+                    }
+                }
+                pdf.create(data, option).toFile('order.pdf', function (err, data) {
+                    if(err) {
+                        res.send(err)
+                    } else {
+                        res.send('File create successfully')
+                        let mailTransporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                                user: EMAIL,
+                                pass: PASSWORD,
+                            }
+                        }) 
+                        let mailDetails = {
+                            from: EMAIL,
+                            to: 'Info@samwash.tech', 
                             subject: 'Замовлення покупця',
                             text: `${user.date ? user.name + ' замовив консультацію на ' + user.date  : user.name + ' зробив замовлення'}`,
                             attachments: [
