@@ -5,6 +5,9 @@ const PaySchema = new mongoose.Schema({
     order: [{
         id: Number,
         nameOfGoods: String,
+        src: String,
+        src2: String,
+        nameImg: String,
         prise: Number,
         size: Number,
         discount: String,

@@ -6,6 +6,8 @@ let ejs = require('ejs')
 let pdf = require('html-pdf')
 let path = require('path')
 const { dirname } = require('path')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 
 router.post('/pay', async (req, res) => {
@@ -20,7 +22,21 @@ router.post('/pay', async (req, res) => {
 
         const userOrder = await order.save()
 
-        res.json(userOrder)
+        // console.log(userOrder._id.toString());
+       
+        let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let passwordLength = 12;
+        let password = ''
+        let userOrderId
+
+        for (let i = 0; i <= passwordLength; i++) {
+            let randomNumber = Math.floor(Math.random() * chars.length);
+            password += chars.substring(randomNumber, randomNumber +1);
+        }
+
+        userOrderId = userOrder._id.toString() + password
+
+        res.json(userOrderId)
     } catch (err) {
         console.log(err);
         res.status(500).json('Failed to register')
