@@ -23,7 +23,7 @@ router.post('/pay', async (req, res) => {
         const userOrder = await order.save()
 
         // console.log(userOrder._id.toString());
-       
+
         let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         let passwordLength = 12;
         let password = ''
@@ -31,7 +31,7 @@ router.post('/pay', async (req, res) => {
 
         for (let i = 0; i <= passwordLength; i++) {
             let randomNumber = Math.floor(Math.random() * chars.length);
-            password += chars.substring(randomNumber, randomNumber +1);
+            password += chars.substring(randomNumber, randomNumber + 1);
         }
 
         userOrderId = userOrder._id.toString() + password
@@ -43,12 +43,11 @@ router.post('/pay', async (req, res) => {
     }
 })
 
-
 router.get('/fetchOrder/:id', async (req, res) => {
     try {
         // console.log(req.params.id);
 
-        const userOrder = await PaySchema.find({_id: req.params.id}).exec();
+        const userOrder = await PaySchema.find({ _id: req.params.id }).exec();
 
         const order = {
             total: userOrder[0].total,
@@ -65,7 +64,7 @@ router.get('/fetchOrder/:id', async (req, res) => {
 
 router.post('/mail', async (req, res) => {
 
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
     const { user } = req.body
 
@@ -77,7 +76,7 @@ router.post('/mail', async (req, res) => {
             order: req.body
         },
         (err, data) => {
-            if(err){
+            if (err) {
                 res.send(err)
             } else {
                 let option = {
@@ -91,7 +90,7 @@ router.post('/mail', async (req, res) => {
                     }
                 }
                 pdf.create(data, option).toFile('order.pdf', function (err, data) {
-                    if(err) {
+                    if (err) {
                         res.send(err)
                     } else {
                         res.send('File create successfully')
@@ -101,12 +100,12 @@ router.post('/mail', async (req, res) => {
                                 user: EMAIL,
                                 pass: PASSWORD,
                             }
-                        }) 
+                        })
                         let mailDetails = {
                             from: EMAIL,
-                            to: EMAIL, 
+                            to: EMAIL,
                             subject: 'Замовлення покупця',
-                            text: `${user.date ? user.name + ' замовив консультацію на ' + user.date  : user.name + ' зробив замовлення'}`,
+                            text: `${user.date ? user.name + ' замовив консультацію на ' + user.date : user.name + ' зробив замовлення'}`,
                             attachments: [
                                 {
                                     path: data.filename
@@ -114,7 +113,7 @@ router.post('/mail', async (req, res) => {
                             ]
                         }
                         mailTransporter.sendMail(mailDetails, function (err, data) {
-                            if(err) {
+                            if (err) {
                                 console.log(err);
                             } else {
                                 console.log('Email send');
@@ -129,7 +128,7 @@ router.post('/mail', async (req, res) => {
 
 router.post('/mailDima', async (req, res) => {
 
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
     const { user } = req.body
 
@@ -141,7 +140,7 @@ router.post('/mailDima', async (req, res) => {
             order: req.body
         },
         (err, data) => {
-            if(err){
+            if (err) {
                 res.send(err)
             } else {
                 let option = {
@@ -155,7 +154,7 @@ router.post('/mailDima', async (req, res) => {
                     }
                 }
                 pdf.create(data, option).toFile('order.pdf', function (err, data) {
-                    if(err) {
+                    if (err) {
                         res.send(err)
                     } else {
                         res.send('File create successfully')
@@ -165,12 +164,12 @@ router.post('/mailDima', async (req, res) => {
                                 user: EMAIL,
                                 pass: PASSWORD,
                             }
-                        }) 
+                        })
                         let mailDetails = {
                             from: EMAIL,
-                            to: 'Info@samwash.tech', 
+                            to: 'Info@samwash.tech',
                             subject: 'Замовлення покупця',
-                            text: `${user.date ? user.name + ' замовив консультацію на ' + user.date  : user.name + ' зробив замовлення'}`,
+                            text: `${user.date ? user.name + ' замовив консультацію на ' + user.date : user.name + ' зробив замовлення'}`,
                             attachments: [
                                 {
                                     path: data.filename
@@ -178,7 +177,7 @@ router.post('/mailDima', async (req, res) => {
                             ]
                         }
                         mailTransporter.sendMail(mailDetails, function (err, data) {
-                            if(err) {
+                            if (err) {
                                 console.log(err);
                             } else {
                                 console.log('Email send');
@@ -191,9 +190,43 @@ router.post('/mailDima', async (req, res) => {
     )
 })
 
+router.post('/mailDimaZam', async (req, res) => {
+
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
+    const { user } = req.body
+
+    const { EMAIL, PASSWORD } = process.env
+
+
+    let mailTransporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: EMAIL,
+            pass: PASSWORD,
+        }
+    })
+
+    let mailDetails = {
+        from: user.email,
+        to: 'Info@samwash.tech',
+        subject: 'Замовлення консультації',
+        text: `${user.name + ' замовив консультацію'}`,
+    }
+
+    mailTransporter.sendMail(mailDetails, function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Email send');
+        }
+    })
+}
+)
+
 router.post('/mailUser', async (req, res) => {
-    try { 
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
+    try {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
         const { user } = req.body
 
@@ -207,7 +240,7 @@ router.post('/mailUser', async (req, res) => {
                 order: req.body
             },
             (err, data) => {
-                if(err){
+                if (err) {
                     res.send(err)
                 } else {
                     let option = {
@@ -221,7 +254,7 @@ router.post('/mailUser', async (req, res) => {
                         }
                     }
                     pdf.create(data, option).toFile('order.pdf', function (err, data) {
-                        if(err) {
+                        if (err) {
                             res.send(err)
                         } else {
                             res.send('File create successfully')
@@ -231,12 +264,12 @@ router.post('/mailUser', async (req, res) => {
                                     user: EMAIL,
                                     pass: PASSWORD,
                                 }
-                            }) 
+                            })
                             let mailDetails = {
                                 from: EMAIL,
-                                to: user.email, 
+                                to: user.email,
                                 subject: 'Ваше замовлення',
-                                text: `Доброго дня ${user.name}, компанія "ООО", ваше замовлення в обробці ${user.date ? ', і ваша консультація на '+ user.date : ''}`,
+                                text: `Доброго дня ${user.name}, компанія "ООО", ваше замовлення в обробці ${user.date ? ', і ваша консультація на ' + user.date : ''}`,
                                 attachments: [
                                     {
                                         path: data.filename,
@@ -247,7 +280,7 @@ router.post('/mailUser', async (req, res) => {
                                 ]
                             }
                             mailTransporter.sendMail(mailDetails, function (err, data) {
-                                if(err) {
+                                if (err) {
                                     console.log(err);
                                 } else {
                                     console.log('Email send');
