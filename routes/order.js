@@ -8,6 +8,8 @@ let path = require('path')
 const { dirname } = require('path')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const axios = require('axios')
+const querystring = require('querystring')
 
 
 router.post('/pay', async (req, res) => {
@@ -294,6 +296,29 @@ router.post('/mailUser', async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json('Failed to register')
+    }
+})
+
+router.post('/reCaptcha', async (req, res) => {
+
+    let params = {
+        secret: process.env.SECRET,
+        response: req.body.gtoken
+    }
+
+    try {
+        let result = await axios.post(
+            'https://www.google.com/recaptcha/api/siteverify', 
+            querystring.stringify(params),
+            {headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }}
+        )
+
+        // return result.data.success
+        res.json(result.data.success)
+    } catch (e){
+        console.log(e);
     }
 })
 
