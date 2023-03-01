@@ -14,13 +14,14 @@ const querystring = require('querystring')
 
 router.post('/pay', async (req, res) => {
     try {
-        // console.log(req.body.obj);
+        console.log(req.body.obj);
 
         const order = new PaySchema({
             order: req.body.obj.order,
             total: req.body.obj.total,
             user: req.body.obj.user
         })
+    
 
         const userOrder = await order.save()
 
@@ -47,7 +48,7 @@ router.post('/pay', async (req, res) => {
 
 router.get('/fetchOrder/:id', async (req, res) => {
     try {
-        // console.log(req.params.id);
+        console.log(req.params.id);
 
         const userOrder = await PaySchema.find({ _id: req.params.id }).exec();
 

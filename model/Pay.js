@@ -15,7 +15,7 @@ const PaySchema = new mongoose.Schema({
     }],
     user: {
         name: String,
-        phone: Number,
+        phone: String,
         email: String,
         cite: String,
         date: String
