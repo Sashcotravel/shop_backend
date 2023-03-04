@@ -10,11 +10,13 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const axios = require('axios')
 const querystring = require('querystring')
+const idAutoIncrement = require("id-auto-increment");
+
+let num = 0
 
 
 router.post('/pay', async (req, res) => {
     try {
-        console.log(req.body.obj);
 
         const order = new PaySchema({
             order: req.body.obj.order,
@@ -48,7 +50,6 @@ router.post('/pay', async (req, res) => {
 
 router.get('/fetchOrder/:id', async (req, res) => {
     try {
-        console.log(req.params.id);
 
         const userOrder = await PaySchema.find({ _id: req.params.id }).exec();
 
@@ -72,6 +73,7 @@ router.post('/mail', async (req, res) => {
     const { user } = req.body
 
     const { EMAIL, PASSWORD } = process.env
+
 
     ejs.renderFile(
         path.join(__dirname, '../views/', 'report-template.ejs'),
@@ -107,8 +109,9 @@ router.post('/mail', async (req, res) => {
                         let mailDetails = {
                             from: EMAIL,
                             to: EMAIL,
-                            subject: 'Замовлення покупця',
-                            text: `${user.date ? user.name + ' замовив консультацію на ' + user.date : user.name + ' зробив замовлення'}`,
+                            subject: 'Замовлення від покупця з CalculatorSamWash.ua',
+                            text: `Замовлення від покупця ${user.name}, ${user.phone ? `телефон: ${user.phone},` : ''}  
+                            ${user.email ? `пошта: ${user.email},` : ''} ${req.body.checked ? 'Не дзвоніть мені.' : 'також замовив консультацію.'}`,
                             attachments: [
                                 {
                                     path: data.filename
@@ -136,6 +139,7 @@ router.post('/mailDima', async (req, res) => {
     const { user } = req.body
 
     const { EMAIL, PASSWORD } = process.env
+
 
     ejs.renderFile(
         path.join(__dirname, '../views/', 'report-template.ejs'),
@@ -171,8 +175,9 @@ router.post('/mailDima', async (req, res) => {
                         let mailDetails = {
                             from: EMAIL,
                             to: 'Info@samwash.tech',
-                            subject: 'Замовлення покупця',
-                            text: `${user.date ? user.name + ' замовив консультацію на ' + user.date : user.name + ' зробив замовлення'}`,
+                            subject: 'Замовлення покупця з CalculatorSamWash.ua',
+                            text: `Замовлення від покупця ${user.name}, ${user.phone ? `телефон: ${user.phone},` : ''}  
+                            ${user.email ? `пошта: ${user.email},` : ''} ${req.body.checked ? 'Не дзвоніть мені.' : 'також замовив консультацію.'}`,
                             attachments: [
                                 {
                                     path: data.filename
@@ -201,6 +206,10 @@ router.post('/mailDimaZam', async (req, res) => {
 
     const { EMAIL, PASSWORD } = process.env
 
+    console.log(user);
+
+    const id = await idAutoIncrement({});
+    num +=1
 
     let mailTransporter = nodemailer.createTransport({
         service: 'gmail',
@@ -213,8 +222,9 @@ router.post('/mailDimaZam', async (req, res) => {
     let mailDetails = {
         from: user.email,
         to: 'Info@samwash.tech',
-        subject: 'Замовлення консультації',
-        text: `${user.name + ' замовив консультацію'}`,
+        subject: 'Замовлення консультації з SamWash.ua',
+        text: `Номер консультації ${num}, консультація для ${user.name}, ${user.phone ? `телефон: ${user.phone},` : ''}  ${user.email ? `пошта: ${user.email},` : ''} 
+        ${user.post ? `повідомлення: ${user.post}` : ''}`,
     }
 
     mailTransporter.sendMail(mailDetails, function (err, data) {
@@ -233,7 +243,6 @@ router.post('/mailUser', async (req, res) => {
 
         const { user } = req.body
 
-        // console.log(__dirname);
 
         const { EMAIL, PASSWORD } = process.env
 
@@ -272,7 +281,7 @@ router.post('/mailUser', async (req, res) => {
                                 from: EMAIL,
                                 to: user.email,
                                 subject: 'Ваше замовлення',
-                                text: `Доброго дня ${user.name}, компанія "ООО", ваше замовлення в обробці ${user.date ? ', і ваша консультація на ' + user.date : ''}`,
+                                text: `Доброго дня ${user.name}, ваш запит прийнято. Ми зв'яжемось з вами найближчим часом`,
                                 attachments: [
                                     {
                                         path: data.filename,

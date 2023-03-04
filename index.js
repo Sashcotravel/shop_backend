@@ -14,7 +14,6 @@ mongoose.connect('mongodb+srv://SashkoTravel:gowno444@cluster0.xqc027t.mongodb.n
 
 
 const app = express()
-
 app.use(express.json())
 app.use(cors())
 
@@ -22,7 +21,7 @@ app.use(cors())
 app.use('/order', orderRoute)
 
 
-app.listen(process.env.PORT || 4445, (err) => {
+app.listen(process.env.PORT || 8000, (err) => {
     if (err) {
         console.log(err);
     }
