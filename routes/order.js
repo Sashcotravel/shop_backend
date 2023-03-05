@@ -309,6 +309,78 @@ router.post('/mailUser', async (req, res) => {
     }
 })
 
+router.post('/mailDimaMiyka', async (req, res) => {
+
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
+    const { user } = req.body
+
+    const { EMAIL, PASSWORD } = process.env
+
+    const id = await idAutoIncrement({});
+
+    let mailTransporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: EMAIL,
+            pass: PASSWORD,
+        }
+    })
+
+    let mailDetails = {
+        from: user.email,
+        // to: 'Info@samwash.tech',
+        to: 'vasinoleksandr1@gmail.com',
+        subject: 'Мийка яка зацікавила',
+        text: `Зацікавила ${user.name}, ${user.phone ? `телефон: ${user.phone},` : ''}  ${user.email ? `пошта: ${user.email},` : ''} 
+        микка: ${req.body.link}`,
+    }
+
+    mailTransporter.sendMail(mailDetails, function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Email send');
+        }
+    })
+}
+)
+
+router.post('/mailUserMiyka', async (req, res) => {
+
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
+    const { user } = req.body
+
+    const { EMAIL, PASSWORD } = process.env
+
+    const id = await idAutoIncrement({});
+
+    let mailTransporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: EMAIL,
+            pass: PASSWORD,
+        }
+    })
+
+    let mailDetails = {
+        from: 'Info@samwash.tech',
+        to: user.email,
+        subject: 'Мийка яка зацікавила',
+        text: `Дякуюмо за цікавість, в скорому часі ми з вами зв'яжимось.`,
+    }
+
+    mailTransporter.sendMail(mailDetails, function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Email send');
+        }
+    })
+}
+)
+
 router.post('/reCaptcha', async (req, res) => {
 
     let params = {
