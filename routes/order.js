@@ -110,8 +110,10 @@ router.post('/mail', async (req, res) => {
                             from: EMAIL,
                             to: EMAIL,
                             subject: 'Замовлення від покупця з CalculatorSamWash.ua',
-                            text: `Замовлення від покупця ${user.name}, ${user.phone ? `телефон: ${user.phone},` : ''}  
-                            ${user.email ? `пошта: ${user.email},` : ''} ${req.body.checked ? 'Не дзвоніть мені.' : 'також замовив консультацію.'}`,
+                            text: `Замовлення від покупця ${user.name}, 
+                            ${user.phone ? `телефон: ${user.phone},` : ''}  
+                            ${user.email ? `пошта: ${user.email},` : ''} 
+                            ${req.body.checked ? 'Не дзвоніть мені.' : 'також замовив консультацію.'}`,
                             attachments: [
                                 {
                                     path: data.filename
@@ -176,8 +178,10 @@ router.post('/mailDima', async (req, res) => {
                             from: EMAIL,
                             to: 'Info@samwash.tech',
                             subject: 'Замовлення покупця з CalculatorSamWash.ua',
-                            text: `Замовлення від покупця ${user.name}, ${user.phone ? `телефон: ${user.phone},` : ''}  
-                            ${user.email ? `пошта: ${user.email},` : ''} ${req.body.checked ? 'Не дзвоніть мені.' : 'також замовив консультацію.'}`,
+                            text: `Замовлення від покупця ${user.name}, 
+                            ${user.phone ? `телефон: ${user.phone},` : ''}  
+                            ${user.email ? `пошта: ${user.email},` : ''} 
+                            ${req.body.checked ? 'Не дзвоніть мені.' : 'також замовив консультацію.'}`,
                             attachments: [
                                 {
                                     path: data.filename
@@ -206,7 +210,6 @@ router.post('/mailDimaZam', async (req, res) => {
 
     const { EMAIL, PASSWORD } = process.env
 
-    console.log(user);
 
     const id = await idAutoIncrement({});
     num +=1
@@ -223,7 +226,10 @@ router.post('/mailDimaZam', async (req, res) => {
         from: user.email,
         to: 'Info@samwash.tech',
         subject: 'Замовлення консультації з SamWash.ua',
-        text: `Номер консультації ${num}, консультація для ${user.name}, ${user.phone ? `телефон: ${user.phone},` : ''}  ${user.email ? `пошта: ${user.email},` : ''} 
+        text: `Номер консультації ${num}, 
+        консультація для ${user.name}, 
+        ${user.phone ? `телефон: ${user.phone},` : ''}  
+        ${user.email ? `пошта: ${user.email},` : ''} 
         ${user.post ? `повідомлення: ${user.post}` : ''}`,
     }
 
@@ -329,10 +335,11 @@ router.post('/mailDimaMiyka', async (req, res) => {
 
     let mailDetails = {
         from: user.email,
-        // to: 'Info@samwash.tech',
-        to: 'vasinoleksandr1@gmail.com',
+        to: 'Info@samwash.tech',
         subject: 'Мийка яка зацікавила',
-        text: `Зацікавила ${user.name}, ${user.phone ? `телефон: ${user.phone},` : ''}  ${user.email ? `пошта: ${user.email},` : ''} 
+        text: `Зацікавила ${user.name}, 
+        ${user.phone ? `телефон: ${user.phone},` : ''}  
+        ${user.email ? `пошта: ${user.email},` : ''} 
         микка: ${req.body.link}`,
     }
 
