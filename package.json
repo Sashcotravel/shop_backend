@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "start2": "npm run --prod"
+    "start2": "npm run --omit=dev"
   },
   "repository": {
     "type": "git",
