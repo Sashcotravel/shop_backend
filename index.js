@@ -17,11 +17,23 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+app.use(express.static('build'))
 
 app.use('/order', orderRoute)
+app.use('/api/order', orderRoute)
+
+app.get('/api/users', (req, res) => {
+    res.send([{
+        id: 1,
+        name: 'Alex'
+    },{
+        id: 2,
+        name: 'andr'
+    }])
+})
 
 
-app.listen(process.env.PORT || 8000, (err) => {
+app.listen(process.env.PORT || 8080, (err) => {
     if (err) {
         console.log(err);
     }

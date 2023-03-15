@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30.758" height="30.758" viewBox="0 0 30.758 30.758">
+  <g id="Group_31" data-name="Group 31" transform="translate(-43.793 -478.793)">
+    <g id="Group_25" data-name="Group 25" transform="translate(63.376 479.281)">
+      <line id="Line_29" data-name="Line 29" y1="10.343" x2="10.343" transform="translate(0.124 0.219)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <line id="Line_30" data-name="Line 30" y1="7.299" transform="translate(0.124 3.264)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <line id="Line_31" data-name="Line 31" x2="7.299" transform="translate(0.124 10.563)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+    </g>
+    <g id="Group_26" data-name="Group 26" transform="translate(63.376 498.376)">
+      <line id="Line_29-2" data-name="Line 29" x2="10.343" y2="10.343" transform="translate(0.124 0.124)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <line id="Line_30-2" data-name="Line 30" y2="7.299" transform="translate(0.124 0.124)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <line id="Line_31-2" data-name="Line 31" x2="7.299" transform="translate(0.124 0.124)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+    </g>
+    <g id="Group_27" data-name="Group 27" transform="translate(44.281 479.281)">
+      <line id="Line_29-3" data-name="Line 29" x1="10.124" y1="10.124" transform="translate(0.219 0.219)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <path id="Path_14" data-name="Path 14" d="M0,7.3V0" transform="translate(10.344 3.044)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <line id="Line_31-3" data-name="Line 31" x1="7.299" transform="translate(3.044 10.343)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+    </g>
+    <g id="Group_28" data-name="Group 28" transform="translate(44.281 498.376)">
+      <line id="Line_29-4" data-name="Line 29" x1="10.343" y2="10.343" transform="translate(0.219 0.124)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <line id="Line_30-3" data-name="Line 30" y2="7.299" transform="translate(10.519 0.124)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <line id="Line_31-4" data-name="Line 31" x1="7.299" transform="translate(3.219 0.124)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

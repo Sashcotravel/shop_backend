@@ -223,14 +223,15 @@ router.post('/mailDimaZam', async (req, res) => {
     })
 
     let mailDetails = {
-        from: user.email,
-        to: 'Info@samwash.tech',
+        from: user?.email,
+        // to: 'Info@samwash.tech',
+        to: 'vasinoleksandr1@gmail.com',
         subject: 'Замовлення консультації з SamWash.ua',
         text: `Номер консультації ${num}, 
-        консультація для ${user.name}, 
-        ${user.phone ? `телефон: ${user.phone},` : ''}  
-        ${user.email ? `пошта: ${user.email},` : ''} 
-        ${user.post ? `повідомлення: ${user.post}` : ''}`,
+        консультація для ${user?.name}, 
+        ${user?.phone ? `телефон: ${user.phone},` : ''}  
+        ${user?.email ? `пошта: ${user?.email},` : ''} 
+        ${user?.post ? `повідомлення: ${user?.post}` : ''}`,
     }
 
     mailTransporter.sendMail(mailDetails, function (err, data) {

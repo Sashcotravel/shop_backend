@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="53.74" height="53.74" viewBox="0 0 53.74 53.74">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.046" y1="0.046" x2="0.963" y2="0.963" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#29363b"/>
+      <stop offset="1" stop-color="#42df4c"/>
+    </linearGradient>
+  </defs>
+  <g id="Route_icon" data-name="Route icon" transform="translate(-279.13 -499.4)">
+    <rect id="Rectangle_68" data-name="Rectangle 68" width="38" height="38" rx="7" transform="translate(306 499.4) rotate(45)" fill="url(#linear-gradient)"/>
+    <g id="Group_57" data-name="Group 57" transform="translate(2404.504 -3003.541)">
+      <g id="Group_58" data-name="Group 58" transform="translate(-0.5 0.041)">
+        <line id="Line_44" data-name="Line 44" y1="10.076" transform="translate(-2103.004 3526.965)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+        <line id="Line_45" data-name="Line 45" x2="13.496" transform="translate(-2103.004 3526.965)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+        <line id="Line_46" data-name="Line 46" x2="4.664" y2="4.465" transform="translate(-2094.172 3522.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+        <line id="Line_47" data-name="Line 47" y1="4.465" x2="4.664" transform="translate(-2094.172 3526.965)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+      </g>
+    </g>
+  </g>
+</svg>
