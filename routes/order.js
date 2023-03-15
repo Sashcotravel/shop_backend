@@ -223,7 +223,7 @@ router.post('/mailDimaZam', async (req, res) => {
     })
 
     let mailDetails = {
-        from: user?.email,
+        from: 'SamWash.ua',
         // to: 'Info@samwash.tech',
         to: 'vasinoleksandr1@gmail.com',
         subject: 'Замовлення консультації з SamWash.ua',

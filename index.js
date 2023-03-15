@@ -33,7 +33,7 @@ app.get('/api/users', (req, res) => {
 })
 
 
-app.listen(process.env.PORT || 8080, (err) => {
+app.listen(8080, (err) => {
     if (err) {
         console.log(err);
     }
