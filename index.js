@@ -15,7 +15,11 @@ mongoose.connect('mongodb+srv://SashkoTravel:gowno444@cluster0.xqc027t.mongodb.n
 
 const app = express()
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    allowedHeaders: '*',
+    allowMethods: '*',
+    origin: '*'
+}))
 
 app.use(express.static('build'))
 
