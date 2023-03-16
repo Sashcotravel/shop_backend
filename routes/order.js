@@ -416,13 +416,6 @@ router.post('/reCaptcha', async (req, res) => {
 })
 
 
-
-
-
-
-
-
-
 router.post('/mailDimaZam', async (req, res) => {
 
     const mailjet = new Mailjet({
@@ -461,8 +454,7 @@ router.post('/mailDimaZam', async (req, res) => {
             ]
         })
 
-    request
-        .then((result) => {
+    request.then((result) => {
             console.log(req.body);
         })
         .catch((err) => {
