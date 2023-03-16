@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const compression = require('compression');
 const orderRoute = require('./routes/order')
 
 
@@ -15,11 +16,8 @@ mongoose.connect('mongodb+srv://SashkoTravel:gowno444@cluster0.xqc027t.mongodb.n
 
 const app = express()
 app.use(express.json())
-// app.use(cors({
-//     allowedHeaders: '*',
-//     allowMethods: '*',
-//     origin: '*'
-// }))
+app.use(cors())
+app.use(compression())
 
 app.use(express.static('build'))
 

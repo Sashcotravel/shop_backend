@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken')
 const axios = require('axios')
 const querystring = require('querystring')
 const idAutoIncrement = require("id-auto-increment");
+const Mailjet = require('node-mailjet');
 
 let num = 0
 
@@ -23,7 +24,7 @@ router.post('/pay', async (req, res) => {
             total: req.body.obj.total,
             user: req.body.obj.user
         })
-    
+
 
         const userOrder = await order.save()
 
@@ -202,47 +203,47 @@ router.post('/mailDima', async (req, res) => {
     )
 })
 
-router.post('/mailDimaZam', async (req, res) => {
+// router.post('/mailDimaZam', async (req, res) => {
 
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+//     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
-    const { user } = req.body
+//     const { user } = req.body
 
-    const { EMAIL, PASSWORD } = process.env
+//     const { EMAIL, PASSWORD } = process.env
 
 
-    const id = await idAutoIncrement({});
-    num +=1
+//     const id = await idAutoIncrement({});
+//     num +=1
 
-    let mailTransporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: EMAIL,
-            pass: PASSWORD,
-        }
-    })
+//     let mailTransporter = nodemailer.createTransport({
+//         service: 'gmail',
+//         auth: {
+//             user: EMAIL,
+//             pass: PASSWORD,
+//         }
+//     })
 
-    let mailDetails = {
-        from: 'SamWash.ua',
-        // to: 'Info@samwash.tech',
-        to: 'vasinoleksandr1@gmail.com',
-        subject: 'Замовлення консультації з SamWash.ua',
-        text: `Номер консультації ${num}, 
-        консультація для ${user?.name}, 
-        ${user?.phone ? `телефон: ${user.phone},` : ''}  
-        ${user?.email ? `пошта: ${user?.email},` : ''} 
-        ${user?.post ? `повідомлення: ${user?.post}` : ''}`,
-    }
+//     let mailDetails = {
+//         from: 'SamWash.ua',
+//         // to: 'Info@samwash.tech',
+//         to: 'vasinoleksandr1@gmail.com',
+//         subject: 'Замовлення консультації з SamWash.ua',
+//         text: `Номер консультації ${num}, 
+//         консультація для ${user?.name}, 
+//         ${user?.phone ? `телефон: ${user.phone},` : ''}  
+//         ${user?.email ? `пошта: ${user?.email},` : ''} 
+//         ${user?.post ? `повідомлення: ${user?.post}` : ''}`,
+//     }
 
-    mailTransporter.sendMail(mailDetails, function (err, data) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('Email send');
-        }
-    })
-}
-)
+//     mailTransporter.sendMail(mailDetails, function (err, data) {
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             console.log('Email send');
+//         }
+//     })
+// }
+// )
 
 router.post('/mailUser', async (req, res) => {
     try {
@@ -398,18 +399,79 @@ router.post('/reCaptcha', async (req, res) => {
 
     try {
         let result = await axios.post(
-            'https://www.google.com/recaptcha/api/siteverify', 
+            'https://www.google.com/recaptcha/api/siteverify',
             querystring.stringify(params),
-            {headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }}
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }
         )
 
         // return result.data.success
         res.json(result.data.success)
-    } catch (e){
+    } catch (e) {
         console.log(e);
     }
 })
+
+
+
+
+
+
+
+
+
+router.post('/mailDimaZam', async (req, res) => {
+
+    const mailjet = new Mailjet({
+        apiKey: process.env.MJ_APIKEY_PUBLIC,
+        apiSecret: process.env.MJ_APIKEY_PRIVATE
+    });
+
+    num = num + 1
+
+    const { user } = req.body
+
+    const request = mailjet
+        .post('send', { version: 'v3.1' })
+        .request({
+            Messages: [
+                {
+                    From: {
+                        Email: 'no-reply@samwash.ua',
+                        Name: "SamWash"
+                    },
+                    To: [
+                        {
+                            Email: "Info@samwash.tech",
+                            Name: "Dmytro"
+                        }
+                    ],
+                    Subject: "Замовлення консультації з SamWash.ua",
+                    HTMLPart: `Номер консультації ${num}, <br />
+                    ${user?.name ? `консультація для: ${user.name},` : ''}<br />
+                     ${user?.phone ? `телефон: ${user.phone},` : ''}<br />
+                     ${user?.email ? `пошта: ${user?.email},` : ''}<br />
+                     ${user?.post ? `повідомлення: ${user?.post}` : ''}`
+                    // HTMLPart: "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!"
+                    // TextPart
+                }
+            ]
+        })
+
+    request
+        .then((result) => {
+            console.log(req.body);
+        })
+        .catch((err) => {
+            console.log(err.originalMessage, err.statusCode)
+        })
+        
+
+})
+
+
 
 module.exports = router
