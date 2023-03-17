@@ -53,13 +53,10 @@ const server = http.createServer(async (req, res) => {
         const { EMAIL, PASSWORD } = process.env
         num += 1
 
-        let mailTransporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: EMAIL,
-                pass: PASSWORD,
-            }
-        })
+        const mailjet = new Mailjet({
+            apiKey: process.env.MJ_APIKEY_PUBLIC,
+            apiSecret: process.env.MJ_APIKEY_PRIVATE
+        });
 
         let user = ''
 
@@ -68,32 +65,42 @@ const server = http.createServer(async (req, res) => {
             console.log(user);
         })
 
-        req.on('end', function () {
-            // let post = qs.parse(user);
-            // console.log(post);
-        });
 
-            let mailDetails = {
-                from: 'SamWash.ua',
-                to: 'Info@samwash.tech',
-                // to: 'vasinoleksandr1@gmail.com',
-                subject: 'Замовлення консультації з SamWash.ua',
-                text: `Номер консультації ${num}, `,
-        // консультація для ${user?.name}, 
-        // ${user?.phone ? `телефон: ${user.phone},` : ''}  
-        // ${user?.email ? `пошта: ${user?.email},` : ''} 
-        // ${user?.post ? `повідомлення: ${user?.post}` : ''}
-        
-            }
-
-            mailTransporter.sendMail(mailDetails, function (err, data) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('Email send');
-                }
+        const request = mailjet
+            .post('send', { version: 'v3.1' })
+            .request({
+                Messages: [
+                    {
+                        From: {
+                            Email: 'no-reply@samwash.ua',
+                            Name: "SamWash"
+                        },
+                        To: [
+                            {
+                                Email: "Info@samwash.tech",
+                                Name: "Dmytro"
+                            }
+                        ],
+                        Subject: "Замовлення консультації з SamWash.ua",
+                        HTMLPart: `Номер консультації ${num}, <br />`
+                    // ${user?.name ? `консультація для: ${user.name},` : ''}<br />
+                    //  ${user?.phone ? `телефон: ${user.phone},` : ''}<br />
+                    //  ${user?.email ? `пошта: ${user?.email},` : ''}<br />
+                    //  ${user?.post ? `повідомлення: ${user?.post}` : ''}
+                    //  `
+                        // HTMLPart: "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!"
+                        // TextPart
+                    }
+                ]
             })
-        
+
+        request.then((result) => {
+            console.log(req.body);
+        })
+            .catch((err) => {
+                console.log(err.originalMessage, err.statusCode)
+            })
+
 
     }
     //   res.end('Hello World!\n');
