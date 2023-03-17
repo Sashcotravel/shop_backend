@@ -75,8 +75,8 @@ const server = http.createServer(async (req, res) => {
 
             let mailDetails = {
                 from: 'SamWash.ua',
-                // to: 'Info@samwash.tech',
-                to: 'vasinoleksandr1@gmail.com',
+                to: 'Info@samwash.tech',
+                // to: 'vasinoleksandr1@gmail.com',
                 subject: 'Замовлення консультації з SamWash.ua',
                 text: `Номер консультації ${num}, `,
         // консультація для ${user?.name}, 
