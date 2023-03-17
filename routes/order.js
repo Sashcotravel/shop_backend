@@ -211,8 +211,6 @@ router.post('/mailDimaZam', async (req, res) => {
 
     const { EMAIL, PASSWORD } = process.env
 
-    console.log('lol');
-
     const id = await idAutoIncrement({});
     num +=1
 
